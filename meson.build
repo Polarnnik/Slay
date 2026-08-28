@@ -14,3 +14,14 @@ slay_inc = include_directories('./include')
 slay_files = files('src/app.cpp')
 
 slay_lib = static_library('slay', slay_files, include_directories: slay_inc, dependencies: [sdl_dep, clay_dep])
+
+slay_dep = declare_dependency(
+  link_with: slay_lib,
+  include_directories: slay_inc,
+  dependencies: [
+    sdl_dep,
+    clay_dep,
+  ],
+)
+
+subdir('examples/hello_slay')
