@@ -40,8 +40,10 @@ void slay::App::run() {
                 m_isRunning = false;
             }
         }
+        SDL_SetRenderDrawColor(m_renderer, 20, 20, 24, 255);
+        SDL_RenderClear(m_renderer);
         onRender();
-
+        SDL_RenderPresent(m_renderer);
     }
     onShutDown();
 }

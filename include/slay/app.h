@@ -19,8 +19,8 @@ class App {
 
     void run();
     bool init();
-    SDL_Window* getWindow()  const;
-    SDL_Renderer* getRendere() const;
+    SDL_Window* getWindow() const {return m_window;}
+    SDL_Renderer* getRendere() const {return m_renderer;}
 
   protected:
     virtual void onStart();
