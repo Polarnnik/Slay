@@ -5,6 +5,8 @@
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
+
+#define CLAY_IMPLEMENTATION
 #include <clay.h>
 
 void clayError(Clay_ErrorData errorData) {

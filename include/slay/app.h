@@ -23,9 +23,9 @@ class App {
     SDL_Renderer* getRendere() const {return m_renderer;}
 
   protected:
-    virtual void onStart();
-    virtual void onRender();
-    virtual void onShutDown();
+    virtual void onStart() {};
+    virtual void onRender() {};
+    virtual void onShutDown() {};
 
   private:
     bool initClay(const AppConfig& config);
