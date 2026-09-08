@@ -1,6 +1,5 @@
 #include "hello_app.h"
 #include "slay/app.h"
-#include "slay/backend/i_backend.h"
 #include <SDL3/SDL_log.h>
 
 HelloApp::HelloApp(slay::AppConfig& config) : slay::App(config) {};
@@ -10,9 +9,6 @@ void HelloApp::onStart() {
 }
 
 void HelloApp::onRender() {
-    SDL_Renderer* renderer = getRendere();
-
-    SDL_SetRenderDrawColor(renderer, 90, 130, 255, 255);
     CLAY(CLAY_ID("OuterContainer"), {
         .layout = {
             .sizing = {CLAY_SIZING_GROW(), CLAY_SIZING_GROW()},
@@ -25,7 +21,10 @@ void HelloApp::onRender() {
             .layout = {
                 .sizing = {CLAY_SIZING_FIXED(150), CLAY_SIZING_GROW()},
                 .layoutDirection = CLAY_TOP_TO_BOTTOM,},
-            .backgroundColor = {140, 140, 140, 255}
+            .backgroundColor = {140, 140, 140, 255},
+            .cornerRadius = CLAY_CORNER_RADIUS(5),
+            .border =  {.color = {180, 80, 80, 255}, .width = CLAY_BORDER_OUTSIDE(2)},
+
         }){}
     }
 }

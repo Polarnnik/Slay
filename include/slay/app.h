@@ -1,10 +1,11 @@
 #pragma once
-#include "slay/backend/i_backend.h"
+#include "slay/renderer/i_renderer.h"
+#include "slay/layout_engine.h"
+#include "slay/platform.h"
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 #include <memory>
 #include <string>
-#include <vector>
 
 namespace slay {
 
@@ -17,12 +18,9 @@ struct AppConfig {
 class App {
   public:
     explicit App(const AppConfig& config);
-    virtual ~App();
 
     void run();
     bool init();
-    SDL_Window* getWindow() const {return m_window;}
-    SDL_Renderer* getRendere() const {return m_renderer;}
 
   protected:
     virtual void onStart() {};
@@ -30,16 +28,11 @@ class App {
     virtual void onShutDown() {};
 
   private:
-    bool initClay(const AppConfig& config);
-    bool initSDL(const AppConfig& config);
-
     AppConfig m_config;
 
-    bool m_isRunning = false;
-    std::vector<char> m_clayArena;
-    SDL_Window* m_window = nullptr;
-    SDL_Renderer* m_renderer = nullptr;
-    std::unique_ptr<IBackend> m_backend;
+    std::unique_ptr<IRenderer> m_renderer;
+    LayoutEngine m_layout;
+    Platform m_platform;
 };
 
 

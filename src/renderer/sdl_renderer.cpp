@@ -1,22 +1,36 @@
-#include "slay/backend/sdl_backend.h"
-#include "slay/backend/i_backend.h"
+#include "slay/renderer/sdl_renderer.h"
 #include <SDL3/SDL_blendmode.h>
+#include <SDL3/SDL_log.h>
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
+#include <clay.h>
 #include <vector>
 
 static int NUM_CIRCLE_SEGMENTS = 16;
 
-void slay::SDLBackend::beginFrame() {
-  SDL_SetRenderDrawColor(m_renderer, 20, 20, 24, 255);
-  SDL_RenderClear(m_renderer);
-  Clay_BeginLayout();
+slay::SDLRenderer::~SDLRenderer() {
+    if (m_renderer)
+        SDL_DestroyRenderer(m_renderer);
 }
 
-void slay::SDLBackend::endFrame() { SDL_RenderPresent(m_renderer); }
+bool slay::SDLRenderer::init() {
+    m_renderer = SDL_CreateRenderer(m_window, "vulkan");
+    if (!m_renderer) {
+        SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
+        return false;
+    }
 
-void slay::SDLBackend::render(float deltaTime) {
-  Clay_RenderCommandArray commands = Clay_EndLayout(deltaTime);
+    return true;
+}
+
+void slay::SDLRenderer::beginFrame() {
+  SDL_SetRenderDrawColor(m_renderer, 20, 20, 24, 255);
+  SDL_RenderClear(m_renderer);
+}
+
+void slay::SDLRenderer::endFrame() { SDL_RenderPresent(m_renderer); }
+
+void slay::SDLRenderer::render(RenderCommandArray& commands) {
 
   for (int i = 0; i < commands.length; i++) {
     Clay_RenderCommand *command = Clay_RenderCommandArray_Get(&commands, i);
@@ -30,7 +44,7 @@ void slay::SDLBackend::render(float deltaTime) {
   }
 }
 
-void slay::SDLBackend::drawArc(const Clay_RenderCommand &cmd,
+void slay::SDLRenderer::drawArc(const Clay_RenderCommand &cmd,
                                const SDL_FPoint center, const float radius,
                                const float startAngle, const float endAngle,
                                const float thickness, const Clay_Color color) {
@@ -64,7 +78,7 @@ void slay::SDLBackend::drawArc(const Clay_RenderCommand &cmd,
   }
 }
 
-void slay::SDLBackend::drawRoundedRect(const Clay_RenderCommand &cmd,
+void slay::SDLRenderer::drawRoundedRect(const Clay_RenderCommand &cmd,
                                        const SDL_FRect &rect) {
   int indexCount = 0, vertexCount = 0;
   SDL_FColor color = {
@@ -215,7 +229,7 @@ void slay::SDLBackend::drawRoundedRect(const Clay_RenderCommand &cmd,
                      indices.data(), indexCount);
 }
 
-void slay::SDLBackend::drawRectangle(const Clay_RenderCommand &cmd) {
+void slay::SDLRenderer::drawRectangle(const Clay_RenderCommand &cmd) {
   const Clay_RectangleRenderData &rectangleData = cmd.renderData.rectangle;
   SDL_FRect drawRect = {
       .x = cmd.boundingBox.x,
@@ -236,7 +250,7 @@ void slay::SDLBackend::drawRectangle(const Clay_RenderCommand &cmd) {
   }
 }
 
-void slay::SDLBackend::drawBorder(const Clay_RenderCommand &cmd) {
+void slay::SDLRenderer::drawBorder(const Clay_RenderCommand &cmd) {
   const Clay_BorderRenderData &borderData = cmd.renderData.border;
   SDL_FRect drawRect = {
       .x = cmd.boundingBox.x,
@@ -321,7 +335,7 @@ void slay::SDLBackend::drawBorder(const Clay_RenderCommand &cmd) {
   }
 }
 
-void slay::SDLBackend::drawImage(const Clay_RenderCommand &cmd) {
+void slay::SDLRenderer::drawImage(const Clay_RenderCommand &cmd) {
     const Clay_ImageRenderData &imageData = cmd.renderData.image;
     SDL_FRect drawRect = {
         .x = cmd.boundingBox.x,
@@ -331,4 +345,19 @@ void slay::SDLBackend::drawImage(const Clay_RenderCommand &cmd) {
     };
 
     SDL_SetRenderDrawBlendMode(m_renderer, SDL_BLENDMODE_BLEND);
+}
+
+void slay::SDLRenderer::startScissors(const Clay_RenderCommand& cmd) {
+    SDL_Rect drawRect = {
+        .x = static_cast<int>(cmd.boundingBox.x),
+        .y = static_cast<int>(cmd.boundingBox.y),
+        .w = static_cast<int>(cmd.boundingBox.width),
+        .h = static_cast<int>(cmd.boundingBox.height),
+    };
+
+    SDL_SetRenderClipRect(m_renderer, &drawRect);
+}
+
+void slay::SDLRenderer::endScissors(const Clay_RenderCommand& cmd) {
+    SDL_SetRenderClipRect(m_renderer, nullptr);
 }
