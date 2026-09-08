@@ -11,7 +11,7 @@ clay_sp = subproject('clay')
 clay_dep = clay_sp.get_variable('clay_dep')
 
 slay_inc = include_directories('./include')
-slay_files = files('src/app.cpp')
+slay_files = files('src/app.cpp', 'src/backend/sdl_backend.cpp')
 
 slay_lib = static_library('slay', slay_files, include_directories: slay_inc, dependencies: [sdl_dep, clay_dep])
 
