@@ -1,4 +1,5 @@
 #pragma once
+#include "slay/font_manager.h"
 #include "slay/renderer/i_renderer.h"
 #include "slay/layout_engine.h"
 #include "slay/platform.h"
@@ -31,9 +32,8 @@ class App {
     AppConfig m_config;
 
     std::unique_ptr<IRenderer> m_renderer;
+    FontManager m_fontManager;
     LayoutEngine m_layout;
     Platform m_platform;
 };
-
-
 }

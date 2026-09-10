@@ -1,8 +1,7 @@
 #include "slay/renderer/sdl_renderer.h"
-#include <SDL3/SDL_blendmode.h>
-#include <SDL3/SDL_log.h>
-#include <SDL3/SDL_pixels.h>
-#include <SDL3/SDL_render.h>
+#include "SDL3_ttf/SDL_ttf.h"
+#include "slay/font_manager.h"
+#include <SDL3/SDL.h>
 #include <clay.h>
 #include <vector>
 
@@ -11,11 +10,21 @@ static int NUM_CIRCLE_SEGMENTS = 16;
 slay::SDLRenderer::~SDLRenderer() {
     if (m_renderer)
         SDL_DestroyRenderer(m_renderer);
+    TTF_Quit();
 }
 
 bool slay::SDLRenderer::init() {
+    if (!TTF_Init()) {
+        SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
+        return false;
+    }
     m_renderer = SDL_CreateRenderer(m_window, "vulkan");
     if (!m_renderer) {
+        SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
+        return false;
+    }
+    m_textEngine = TTF_CreateRendererTextEngine(m_renderer);
+    if (!m_textEngine) {
         SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
         return false;
     }
@@ -360,4 +369,8 @@ void slay::SDLRenderer::startScissors(const Clay_RenderCommand& cmd) {
 
 void slay::SDLRenderer::endScissors(const Clay_RenderCommand& cmd) {
     SDL_SetRenderClipRect(m_renderer, nullptr);
+}
+
+void slay::SDLRenderer::drawText(const Clay_RenderCommand& cmd) {
+
 }

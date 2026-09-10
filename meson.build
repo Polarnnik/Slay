@@ -10,21 +10,23 @@ add_project_arguments(
     language: 'cpp'
 )
 
-sdl_dep = dependency('sdl3', required: false)
+sdl_dep = dependency('sdl3', required: true)
+sdl_ttf_dep = dependency('sdl3_ttf', required: true)
 
 clay_sp = subproject('clay')
 clay_dep = clay_sp.get_variable('clay_dep')
 
 slay_inc = include_directories('./include')
-slay_files = files('src/app.cpp', 'src/renderer/sdl_renderer.cpp', 'src/layout_engine.cpp', 'src/platform.cpp')
+slay_files = files('src/app.cpp', 'src/renderer/sdl_renderer.cpp', 'src/layout_engine.cpp', 'src/platform.cpp', 'src/font_manager.cpp')
 
-slay_lib = static_library('slay', slay_files, include_directories: slay_inc, dependencies: [sdl_dep, clay_dep])
+slay_lib = static_library('slay', slay_files, include_directories: slay_inc, dependencies: [sdl_dep, sdl_ttf_dep, clay_dep])
 
 slay_dep = declare_dependency(
   link_with: slay_lib,
   include_directories: slay_inc,
   dependencies: [
     sdl_dep,
+    sdl_ttf_dep,
     clay_dep,
   ],
 )

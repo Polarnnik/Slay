@@ -2,13 +2,7 @@
 #include "slay/layout_engine.h"
 #include "slay/platform.h"
 #include "slay/renderer/sdl_renderer.h"
-#include <SDL3/SDL_error.h>
-#include <SDL3/SDL_events.h>
-#include <SDL3/SDL_init.h>
-#include <SDL3/SDL_log.h>
-#include <SDL3/SDL_render.h>
-#include <SDL3/SDL_video.h>
-#include <SDL3/SDL_timer.h>
+#include <SDL3/SDL.h>
 #include <memory>
 
 
@@ -21,9 +15,12 @@ bool slay::App::init() {
         return false;
     if (!m_layout.init(m_config.width, m_config.height))
         return false;
+    m_layout.setFontManager(&m_fontManager);
 
     m_renderer = std::make_unique<SDLRenderer>(m_platform.getWindow());
     if (!m_renderer->init())
+        return false;
+    if (!m_fontManager.load("assets/Inter-Regular.otf", "default"))
         return false;
 
     return true;
