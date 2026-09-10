@@ -1,4 +1,5 @@
 #include "slay/platform.h"
+#include "SDL3_ttf/SDL_ttf.h"
 #include "slay/app.h"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_events.h>
@@ -35,7 +36,7 @@ void slay::Platform::pollEvents() {
             case SDL_EVENT_QUIT:
                 m_shouldQuit = true;
                 break;
-            case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
+            case SDL_EVENT_WINDOW_RESIZED:
                 m_isWindowResized = true;
                 break;
         }
