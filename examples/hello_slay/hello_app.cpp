@@ -1,5 +1,6 @@
 #include "hello_app.h"
 #include "slay/app.h"
+#include "slay/layout_engine.h"
 #include <SDL3/SDL_log.h>
 
 HelloApp::HelloApp(slay::AppConfig& config) : slay::App(config) {};
@@ -25,7 +26,11 @@ void HelloApp::onRender() {
             .cornerRadius = CLAY_CORNER_RADIUS(5),
             .border =  {.color = {180, 80, 80, 255}, .width = CLAY_BORDER_OUTSIDE(2)},
 
-        }){}
+        }){
+        CLAY_TEXT(CLAY_STRING("WORKING RHAAAAA!!!!!!!!!!!"), CLAY_TEXT_CONFIG(
+            {.textColor = {0, 0, 0, 255}, .fontId = 1, .fontSize = 24}
+        ));
+        }
     }
 }
 

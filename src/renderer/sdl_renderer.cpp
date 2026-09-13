@@ -2,6 +2,7 @@
 #include "SDL3_ttf/SDL_ttf.h"
 #include "slay/font_manager.h"
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_render.h>
 #include <clay.h>
 #include <vector>
 
@@ -47,8 +48,22 @@ void slay::SDLRenderer::render(RenderCommandArray& commands) {
     switch (command->commandType) {
     case CLAY_RENDER_COMMAND_TYPE_RECTANGLE:
       drawRectangle(*command);
+      break;
     case CLAY_RENDER_COMMAND_TYPE_BORDER:
         drawBorder(*command);
+        break;
+    case CLAY_RENDER_COMMAND_TYPE_IMAGE:
+        drawImage(*command);
+        break;
+    case CLAY_RENDER_COMMAND_TYPE_TEXT:
+        drawText(*command);
+        break;
+    case CLAY_RENDER_COMMAND_TYPE_SCISSOR_START:
+        startScissors(*command);
+        break;
+    case CLAY_RENDER_COMMAND_TYPE_SCISSOR_END:
+        endScissors(*command);
+        break;
     }
   }
 }
@@ -345,7 +360,7 @@ void slay::SDLRenderer::drawBorder(const Clay_RenderCommand &cmd) {
 }
 
 void slay::SDLRenderer::drawImage(const Clay_RenderCommand &cmd) {
-    const Clay_ImageRenderData &imageData = cmd.renderData.image;
+    SDL_Texture* image = static_cast<SDL_Texture*>(cmd.renderData.image.imageData);
     SDL_FRect drawRect = {
         .x = cmd.boundingBox.x,
         .y = cmd.boundingBox.y,
@@ -353,7 +368,7 @@ void slay::SDLRenderer::drawImage(const Clay_RenderCommand &cmd) {
         .h = cmd.boundingBox.height,
     };
 
-    SDL_SetRenderDrawBlendMode(m_renderer, SDL_BLENDMODE_BLEND);
+    SDL_RenderTexture(m_renderer, image, nullptr, &drawRect);
 }
 
 void slay::SDLRenderer::startScissors(const Clay_RenderCommand& cmd) {
@@ -372,5 +387,20 @@ void slay::SDLRenderer::endScissors(const Clay_RenderCommand& cmd) {
 }
 
 void slay::SDLRenderer::drawText(const Clay_RenderCommand& cmd) {
+    const Clay_TextRenderData &textData = cmd.renderData.text;
+    SDL_FRect drawRect = {
+        .x = cmd.boundingBox.x,
+        .y = cmd.boundingBox.y,
+        .w = cmd.boundingBox.width,
+        .h = cmd.boundingBox.height,
+    };
 
+    TTF_Font* font = m_fontManager.resolve(slay::FontId{textData.fontId}, textData.fontSize);
+    if (!font) {
+        return;
+    }
+    TTF_Text* text = TTF_CreateText(m_textEngine, font, textData.stringContents.chars, textData.stringContents.length);
+    TTF_SetTextColorFloat(text, textData.textColor.r, textData.textColor.g, textData.textColor.b, textData.textColor.a);
+    TTF_DrawRendererText(text, drawRect.x, drawRect.y);
+    TTF_DestroyText(text);
 }

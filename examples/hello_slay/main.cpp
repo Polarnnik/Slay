@@ -3,7 +3,7 @@
 
 int main() {
     slay::AppConfig config = {
-        .title = "Hello saly",
+        .title = "Hello slay",
         .width = 800,
         .height = 600,
     };

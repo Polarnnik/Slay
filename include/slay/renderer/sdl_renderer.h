@@ -1,5 +1,6 @@
 #pragma once
 #include "i_renderer.h"
+#include "slay/font_manager.h"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3/SDL_video.h>
@@ -8,11 +9,10 @@ namespace slay {
 
 class SDLRenderer : public IRenderer {
   public:
-    explicit SDLRenderer(SDL_Window* window) : m_window(window) {}
+    explicit SDLRenderer(SDL_Window* window, FontManager& manager) : m_window(window), m_fontManager(manager) {}
     ~SDLRenderer();
 
     bool init() override;
-
 
     void beginFrame() override;
     void render(RenderCommandArray& cmd) override;
@@ -32,6 +32,6 @@ class SDLRenderer : public IRenderer {
     SDL_Window* m_window;
     SDL_Renderer* m_renderer;
     TTF_TextEngine* m_textEngine;
-    FontManager* m_fontManager;
+    FontManager& m_fontManager;
 };
 }

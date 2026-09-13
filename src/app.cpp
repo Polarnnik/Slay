@@ -17,10 +17,10 @@ bool slay::App::init() {
         return false;
     m_layout.setFontManager(&m_fontManager);
 
-    m_renderer = std::make_unique<SDLRenderer>(m_platform.getWindow());
+    m_renderer = std::make_unique<SDLRenderer>(m_platform.getWindow(), m_fontManager);
     if (!m_renderer->init())
         return false;
-    if (!m_fontManager.load("assets/Inter-Regular.otf", "default"))
+    if (!m_fontManager.load("assets/Inter-Regular.otf"))
         return false;
 
     return true;
