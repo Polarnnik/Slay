@@ -9,7 +9,7 @@ namespace slay {
 
 class SDLRenderer : public IRenderer {
   public:
-    explicit SDLRenderer(SDL_Window* window, FontManager& manager) : m_window(window), m_fontManager(manager) {}
+    explicit SDLRenderer(SDL_Window* window, FontManager& manager, bool vsync) : m_window(window), m_fontManager(manager), m_vsync(vsync) {}
     ~SDLRenderer();
 
     bool init() override;
@@ -33,5 +33,6 @@ class SDLRenderer : public IRenderer {
     SDL_Renderer* m_renderer;
     TTF_TextEngine* m_textEngine;
     FontManager& m_fontManager;
+    bool m_vsync;
 };
 }

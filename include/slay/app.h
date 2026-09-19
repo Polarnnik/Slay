@@ -14,6 +14,7 @@ struct AppConfig {
     std::string title;
     int width = 800;
     int height = 600;
+    bool vsync = true;
 };
 
 class App {

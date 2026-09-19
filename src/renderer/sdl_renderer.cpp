@@ -2,6 +2,7 @@
 #include "SDL3_ttf/SDL_ttf.h"
 #include "slay/font_manager.h"
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_log.h>
 #include <SDL3/SDL_render.h>
 #include <clay.h>
 #include <vector>
@@ -14,10 +15,13 @@ slay::SDLRenderer::~SDLRenderer() {
 }
 
 bool slay::SDLRenderer::init() {
-    m_renderer = SDL_CreateRenderer(m_window, "vulkan");
+    m_renderer = SDL_CreateRenderer(m_window, nullptr);
     if (!m_renderer) {
         SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
         return false;
+    }
+    if (SDL_SetRenderVSync(m_renderer, m_vsync ? 1 : 0)) {
+        SDL_Log("Failed to set vsync: %s", SDL_GetError());
     }
     m_textEngine = TTF_CreateRendererTextEngine(m_renderer);
     if (!m_textEngine) {
