@@ -19,6 +19,7 @@ struct AppConfig {
 class App {
   public:
     explicit App(const AppConfig& config);
+    ~App();
 
     void run();
     bool init();

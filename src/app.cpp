@@ -11,6 +11,14 @@ slay::App::App(const slay::AppConfig &config) {
 }
 
 bool slay::App::init() {
+    if (!SDL_Init(SDL_INIT_VIDEO)) {
+        SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
+        return false;
+    }
+    if (!TTF_Init()) {
+        SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
+        return false;
+    }
     if (!m_platform.init(m_config))
         return false;
     if (!m_layout.init(m_config.width, m_config.height))
@@ -51,4 +59,9 @@ void slay::App::run() {
         m_renderer->endFrame();
     }
     onShutDown();
+}
+
+slay::App::~App() {
+    TTF_Quit();
+    SDL_Quit();
 }

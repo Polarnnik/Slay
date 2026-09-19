@@ -6,11 +6,6 @@
 #include <SDL3/SDL_video.h>
 
 bool slay::Platform::init(const AppConfig& config) {
-    if (!SDL_Init(SDL_INIT_VIDEO)) {
-        SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
-        return false;
-    }
-
     m_window = SDL_CreateWindow(
         config.title.c_str(),
         config.width,
@@ -51,9 +46,5 @@ slay::WindowSize slay::Platform::getWindowSize() const {
 }
 
 slay::Platform::~Platform() {
-    if (m_window) {
-            SDL_DestroyWindow(m_window);
-        }
-
-        SDL_Quit();
+    if (m_window) SDL_DestroyWindow(m_window);
 }

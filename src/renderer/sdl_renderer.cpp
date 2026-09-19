@@ -11,14 +11,9 @@ static int NUM_CIRCLE_SEGMENTS = 16;
 slay::SDLRenderer::~SDLRenderer() {
     if (m_renderer)
         SDL_DestroyRenderer(m_renderer);
-    TTF_Quit();
 }
 
 bool slay::SDLRenderer::init() {
-    if (!TTF_Init()) {
-        SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
-        return false;
-    }
     m_renderer = SDL_CreateRenderer(m_window, "vulkan");
     if (!m_renderer) {
         SDL_Log("Failed to initialize SDL: %s", SDL_GetError());

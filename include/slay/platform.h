@@ -25,6 +25,6 @@ class Platform {
     private:
     bool m_shouldQuit = false;
     bool m_isWindowResized = false;
-    SDL_Window* m_window;
+    SDL_Window* m_window = nullptr;
 };
 }
