@@ -20,11 +20,16 @@ FontManager::FontManager() {
 }
 
 FontManager::~FontManager() {
+    clear();
+}
+
+void FontManager::clear() {
     for (auto& [key, font] : m_cache) {
         if (font) {
             TTF_CloseFont(font);
         }
     }
+    m_cache.clear();
 }
 
 FontId FontManager::load(const std::string& filePath) {

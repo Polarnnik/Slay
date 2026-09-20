@@ -10,5 +10,6 @@ class IRenderer {
     virtual void beginFrame() = 0;
     virtual void render(RenderCommandArray& cmd) = 0;
     virtual void endFrame() = 0;
+    virtual void shutdown() = 0;
 };
 }

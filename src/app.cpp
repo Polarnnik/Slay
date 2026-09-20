@@ -59,6 +59,13 @@ void slay::App::run() {
         m_renderer->endFrame();
     }
     onShutDown();
+    shutdown();
+}
+
+void slay::App::shutdown() {
+    if (m_renderer) m_renderer->shutdown();
+    m_fontManager.clear();
+    m_platform.shutdown();
 }
 
 slay::App::~App() {

@@ -17,6 +17,7 @@ class SDLRenderer : public IRenderer {
     void beginFrame() override;
     void render(RenderCommandArray& cmd) override;
     void endFrame() override;
+    void shutdown() override;
 
   private:
     void drawRectangle(const Clay_RenderCommand& cmd);
@@ -29,9 +30,9 @@ class SDLRenderer : public IRenderer {
     void drawRoundedRect(const Clay_RenderCommand& cmd, const SDL_FRect& rect);
     void drawArc(const Clay_RenderCommand& cmd, const SDL_FPoint center, const float radius, const float startAngle, const float endAngle, const float thickness, const Clay_Color color);
 
-    SDL_Window* m_window;
-    SDL_Renderer* m_renderer;
-    TTF_TextEngine* m_textEngine;
+    SDL_Window* m_window = nullptr;
+    SDL_Renderer* m_renderer = nullptr;
+    TTF_TextEngine* m_textEngine = nullptr;
     FontManager& m_fontManager;
     bool m_vsync;
 };

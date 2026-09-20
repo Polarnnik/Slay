@@ -23,6 +23,7 @@ class FontManager {
 
     FontId load(const std::string& filePath);
     TTF_Font* resolve(FontId family, float size);
+    void clear();
 
   private:
     struct Family {

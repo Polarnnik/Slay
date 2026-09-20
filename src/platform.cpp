@@ -45,6 +45,14 @@ slay::WindowSize slay::Platform::getWindowSize() const {
     return {static_cast<float>(width), static_cast<float>(height)};
 }
 
+void slay::Platform::shutdown() {
+    if (m_window) {
+        SDL_DestroyWindow(m_window);
+        m_window = nullptr;
+    }
+
+}
+
 slay::Platform::~Platform() {
-    if (m_window) SDL_DestroyWindow(m_window);
+    shutdown();
 }

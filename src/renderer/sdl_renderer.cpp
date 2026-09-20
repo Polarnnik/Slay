@@ -10,8 +10,7 @@
 static int NUM_CIRCLE_SEGMENTS = 16;
 
 slay::SDLRenderer::~SDLRenderer() {
-    if (m_renderer)
-        SDL_DestroyRenderer(m_renderer);
+    shutdown();
 }
 
 bool slay::SDLRenderer::init() {
@@ -20,7 +19,7 @@ bool slay::SDLRenderer::init() {
         SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
         return false;
     }
-    if (SDL_SetRenderVSync(m_renderer, m_vsync ? 1 : 0)) {
+    if (!SDL_SetRenderVSync(m_renderer, m_vsync ? 1 : 0)) {
         SDL_Log("Failed to set vsync: %s", SDL_GetError());
     }
     m_textEngine = TTF_CreateRendererTextEngine(m_renderer);
@@ -30,6 +29,18 @@ bool slay::SDLRenderer::init() {
     }
 
     return true;
+}
+
+void slay::SDLRenderer::shutdown() {
+    if (m_textEngine)
+    {
+        TTF_DestroyRendererTextEngine(m_textEngine);
+        m_textEngine = nullptr;
+    }
+    if (m_renderer) {
+        SDL_DestroyRenderer(m_renderer);
+        m_renderer = nullptr;
+    }
 }
 
 void slay::SDLRenderer::beginFrame() {

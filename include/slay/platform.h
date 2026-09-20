@@ -21,6 +21,7 @@ class Platform {
     SDL_Window* getWindow() const {return m_window;}
     bool shouldQuit() const {return m_shouldQuit;}
     bool isWindowResized() const {return m_isWindowResized;}
+    void shutdown();
 
     private:
     bool m_shouldQuit = false;

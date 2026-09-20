@@ -15,6 +15,8 @@ struct AppConfig {
     int width = 800;
     int height = 600;
     bool vsync = true;
+
+    std::string defaultFont = "./Inter-Regular.otf";
 };
 
 class App {
@@ -24,6 +26,7 @@ class App {
 
     void run();
     bool init();
+    void shutdown();
 
   protected:
     virtual void onStart() {};
