@@ -7,6 +7,7 @@ HelloApp::HelloApp(slay::AppConfig& config) : slay::App(config) {};
 
 void HelloApp::onStart() {
     SDL_Log("Example sucsesfully started!");
+    loadFont("/Inter-Regular.otf");
 }
 
 void HelloApp::onRender() {

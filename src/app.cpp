@@ -1,8 +1,10 @@
 #include "slay/app.h"
+#include "slay/font_manager.h"
 #include "slay/layout_engine.h"
 #include "slay/platform.h"
 #include "slay/renderer/sdl_renderer.h"
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_filesystem.h>
 #include <memory>
 
 
@@ -28,10 +30,12 @@ bool slay::App::init() {
     m_renderer = std::make_unique<SDLRenderer>(m_platform.getWindow(), m_fontManager, m_config.vsync);
     if (!m_renderer->init())
         return false;
-    if (!m_fontManager.load("assets/Inter-Regular.otf"))
-        return false;
-
     return true;
+}
+
+slay::FontId slay::App::loadFont(const std::string& filepath) {
+    std::string fullPath = SDL_GetBasePath() + filepath;
+    return m_fontManager.load(fullPath);
 }
 
 void slay::App::run() {

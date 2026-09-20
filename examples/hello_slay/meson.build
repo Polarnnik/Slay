@@ -5,3 +5,6 @@ executable('hello_slay',
   ],
   dependencies: slay_dep,
 )
+
+fs = import('fs')
+fs.copyfile('../../assets/Inter-Regular.otf', 'Inter-Regular.otf')
