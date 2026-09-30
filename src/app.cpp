@@ -51,7 +51,7 @@ void slay::App::run() {
         m_platform.pollEvents();
         if (m_platform.isWindowResized()) {
             WindowSize size = m_platform.getWindowSize();
-            Clay_SetLayoutDimensions({.width = size.width, .height = size.height});
+            m_layout.setWindowSize(size.width, size.height);
         }
 
         m_layout.begin();
