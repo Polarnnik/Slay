@@ -32,3 +32,4 @@ slay_dep = declare_dependency(
 )
 
 subdir('examples/hello_slay')
+subdir('tests')

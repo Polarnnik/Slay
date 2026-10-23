@@ -1,0 +1,6 @@
+test_arena = executable(
+  'test_arena',
+  ['test_arena.cpp', '../src/core/arena.cpp'],
+  include_directories: include_directories('../src/core'),
+)
+test('arena', test_arena)
