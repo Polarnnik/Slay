@@ -1,5 +1,6 @@
-#include "hello_app.h"
 #include "slay/app.h"
+
+#include "hello_app.h"
 
 int main() {
     slay::AppConfig config = {
@@ -9,7 +10,7 @@ int main() {
     };
 
     HelloApp app(config);
-    if (!app.init()) return -1;
+    if (!app.init())
+        return -1;
     app.run();
-
 }

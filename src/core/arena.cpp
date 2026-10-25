@@ -1,9 +1,10 @@
+#include "slay/core/arena.h"
+
 #include <cassert>
 #include <cstddef>
 #include <cstring>
 #include <memory>
 #include <new>
-#include "slay/core/arena.h"
 
 slay::Arena::Arena(size_t size) {
     m_memBlock = std::make_unique_for_overwrite<std::byte[]>(size);
@@ -21,7 +22,8 @@ void* slay::Arena::allocRaw(size_t size, size_t align) noexcept {
     const auto cur = reinterpret_cast<uintptr_t>(m_pointer);
     const auto end = reinterpret_cast<uintptr_t>(m_end);
     const uintptr_t aligned = (cur + align - 1) & ~(uintptr_t(align) - 1);
-    if (aligned > end || size > end - aligned) return nullptr;
+    if (aligned > end || size > end - aligned)
+        return nullptr;
 
     m_pointer = reinterpret_cast<std::byte*>(aligned + size);
     return reinterpret_cast<void*>(aligned);
@@ -37,8 +39,9 @@ size_t slay::Arena::capacity() const {
 
 slay::ArenaStr slay::Arena::copyStr(std::string_view str) {
     void* arenaStr = allocRaw(str.size(), 1);
-    if (arenaStr == nullptr) throw std::bad_alloc();
+    if (arenaStr == nullptr)
+        throw std::bad_alloc();
 
     std::memcpy(arenaStr, str.data(), str.size());
-    return { static_cast<char*>(arenaStr), static_cast<uint32_t>(str.size()) };
+    return {static_cast<char*>(arenaStr), static_cast<uint32_t>(str.size())};
 }

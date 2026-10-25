@@ -1,7 +1,9 @@
 #pragma once
 
 #include "slay/font_manager.h"
+
 #include <clay.h>
+
 #include <cstddef>
 #include <vector>
 
@@ -21,4 +23,4 @@ class LayoutEngine {
     std::vector<std::byte> m_clayArena;
     FontManager* m_fontManager;
 };
-}
+} // namespace slay

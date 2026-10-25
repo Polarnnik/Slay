@@ -1,17 +1,16 @@
 #include "slay/platform.h"
-#include "SDL3_ttf/SDL_ttf.h"
+
 #include "slay/app.h"
+
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_video.h>
 
+#include "SDL3_ttf/SDL_ttf.h"
+
 bool slay::Platform::init(const AppConfig& config) {
-    m_window = SDL_CreateWindow(
-        config.title.c_str(),
-        config.width,
-        config.height,
-        SDL_WINDOW_RESIZABLE
-    );
+    m_window =
+        SDL_CreateWindow(config.title.c_str(), config.width, config.height, SDL_WINDOW_RESIZABLE);
 
     if (!m_window) {
         SDL_Log("Failed to create window: %s", SDL_GetError());
@@ -28,12 +27,12 @@ void slay::Platform::pollEvents() {
 
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
-            case SDL_EVENT_QUIT:
-                m_shouldQuit = true;
-                break;
-            case SDL_EVENT_WINDOW_RESIZED:
-                m_isWindowResized = true;
-                break;
+        case SDL_EVENT_QUIT:
+            m_shouldQuit = true;
+            break;
+        case SDL_EVENT_WINDOW_RESIZED:
+            m_isWindowResized = true;
+            break;
         }
     }
 }
@@ -50,7 +49,6 @@ void slay::Platform::shutdown() {
         SDL_DestroyWindow(m_window);
         m_window = nullptr;
     }
-
 }
 
 slay::Platform::~Platform() {

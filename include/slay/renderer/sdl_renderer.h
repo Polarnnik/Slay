@@ -1,15 +1,18 @@
 #pragma once
-#include "i_renderer.h"
 #include "slay/font_manager.h"
+
 #include <SDL3/SDL.h>
-#include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3/SDL_video.h>
+#include <SDL3_ttf/SDL_ttf.h>
+
+#include "i_renderer.h"
 
 namespace slay {
 
 class SDLRenderer : public IRenderer {
   public:
-    explicit SDLRenderer(SDL_Window* window, FontManager& manager, bool vsync) : m_window(window), m_fontManager(manager), m_vsync(vsync) {}
+    explicit SDLRenderer(SDL_Window* window, FontManager& manager, bool vsync)
+        : m_window(window), m_fontManager(manager), m_vsync(vsync) {}
     ~SDLRenderer();
 
     bool init() override;
@@ -28,7 +31,9 @@ class SDLRenderer : public IRenderer {
     void endScissors(const Clay_RenderCommand& cmd);
 
     void drawRoundedRect(const Clay_RenderCommand& cmd, const SDL_FRect& rect);
-    void drawArc(const Clay_RenderCommand& cmd, const SDL_FPoint center, const float radius, const float startAngle, const float endAngle, const float thickness, const Clay_Color color);
+    void drawArc(const Clay_RenderCommand& cmd, const SDL_FPoint center, const float radius,
+                 const float startAngle, const float endAngle, const float thickness,
+                 const Clay_Color color);
 
     SDL_Window* m_window = nullptr;
     SDL_Renderer* m_renderer = nullptr;
@@ -36,4 +41,4 @@ class SDLRenderer : public IRenderer {
     FontManager& m_fontManager;
     bool m_vsync;
 };
-}
+} // namespace slay

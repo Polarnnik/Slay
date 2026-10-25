@@ -1,10 +1,11 @@
 #pragma once
 #include "slay/layout_engine.h"
+
 #include <clay.h>
 
 namespace slay {
 class IRenderer {
-    public:
+  public:
     virtual ~IRenderer() = default;
     virtual bool init() = 0;
     virtual void beginFrame() = 0;
@@ -12,4 +13,4 @@ class IRenderer {
     virtual void endFrame() = 0;
     virtual void shutdown() = 0;
 };
-}
+} // namespace slay

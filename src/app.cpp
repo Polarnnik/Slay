@@ -1,14 +1,16 @@
 #include "slay/app.h"
+
 #include "slay/font_manager.h"
 #include "slay/layout_engine.h"
 #include "slay/platform.h"
 #include "slay/renderer/sdl_renderer.h"
+
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_filesystem.h>
+
 #include <memory>
 
-
-slay::App::App(const slay::AppConfig &config) {
+slay::App::App(const slay::AppConfig& config) {
     m_config = config;
 }
 
@@ -27,7 +29,8 @@ bool slay::App::init() {
         return false;
     m_layout.setFontManager(&m_fontManager);
 
-    m_renderer = std::make_unique<SDLRenderer>(m_platform.getWindow(), m_fontManager, m_config.vsync);
+    m_renderer =
+        std::make_unique<SDLRenderer>(m_platform.getWindow(), m_fontManager, m_config.vsync);
     if (!m_renderer->init())
         return false;
     return true;
@@ -42,7 +45,7 @@ void slay::App::run() {
     Uint64 lastTime = SDL_GetTicksNS();
 
     onStart();
-    while(!m_platform.shouldQuit()) {
+    while (!m_platform.shouldQuit()) {
         Uint64 currentTime = SDL_GetTicksNS();
         float deltaTime = static_cast<float>(currentTime - lastTime) / 1'000'000'000.0f;
         lastTime = currentTime;
@@ -67,7 +70,8 @@ void slay::App::run() {
 }
 
 void slay::App::shutdown() {
-    if (m_renderer) m_renderer->shutdown();
+    if (m_renderer)
+        m_renderer->shutdown();
     m_fontManager.clear();
     m_platform.shutdown();
 }
