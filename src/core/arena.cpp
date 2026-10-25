@@ -1,6 +1,7 @@
 #include "arena.h"
 #include <cassert>
 #include <cstddef>
+#include <cstring>
 #include <memory>
 #include <new>
 
@@ -32,4 +33,12 @@ size_t Arena::used() const {
 
 size_t Arena::capacity() const {
     return static_cast<size_t>(m_end - m_memBlock.get());
+}
+
+ArenaStr Arena::copyStr(std::string_view str) {
+    void* arenaStr = allocRaw(str.size(), 1);
+    if (arenaStr == nullptr) throw std::bad_alloc();
+
+    std::memcpy(arenaStr, str.data(), str.size());
+    return { static_cast<char*>(arenaStr), static_cast<uint32_t>(str.size()) };
 }

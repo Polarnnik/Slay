@@ -92,6 +92,31 @@ Arena arena(1024);
     std::cout << "Reset: PASS\n";
 }
 
+// Test 6: Independence
+{
+    Arena arena(64);
+    std::string src = "hello";
+    ArenaStr s = arena.copyStr(src);
+
+    src[0] = 'J';
+    src.clear(); src.shrink_to_fit();
+
+    assert(s.len == 5);
+    assert(std::memcmp(s.data, "hello", 5) == 0);
+    std::cout << "String independence: PASS\n";
+}
+
+// Test 7: exhaustion
+{
+    Arena arena(4);
+    const size_t before = arena.used();
+    bool threw = false;
+    try { arena.copyStr("too long"); } catch (const std::bad_alloc&) { threw = true; }
+    assert(threw);
+    assert(arena.used() == before);
+    std::cout << "String exhaustion: PASS\n";
+}
+
 std::cout << "All tests passed.\n";
 
 }

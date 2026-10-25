@@ -6,8 +6,14 @@
 #include <memory>
 #include <new>
 #include <stdexcept>
+#include <string_view>
 #include<type_traits>
 #include <utility>
+
+struct ArenaStr {
+    const char* data;
+    uint32_t len;
+};
 
 class Arena {
   public:
@@ -23,6 +29,7 @@ class Arena {
     void* allocRaw(size_t size, size_t align) noexcept;
     size_t used() const;
     size_t capacity() const;
+    ArenaStr copyStr(std::string_view str);
 
   private:
 
