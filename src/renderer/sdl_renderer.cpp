@@ -4,6 +4,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_render.h>
+#include <SDL3/SDL_stdinc.h>
 #include <clay.h>
 #include <vector>
 
@@ -405,12 +406,14 @@ void slay::SDLRenderer::drawText(const Clay_RenderCommand& cmd) {
         .h = cmd.boundingBox.height,
     };
 
+    const Clay_Color& color = textData.textColor;
+
     TTF_Font* font = m_fontManager.resolve(slay::FontId{textData.fontId}, textData.fontSize);
     if (!font) {
         return;
     }
     TTF_Text* text = TTF_CreateText(m_textEngine, font, textData.stringContents.chars, textData.stringContents.length);
-    TTF_SetTextColorFloat(text, textData.textColor.r, textData.textColor.g, textData.textColor.b, textData.textColor.a);
+    TTF_SetTextColorFloat(text, Uint8(color.r), Uint8(color.g), Uint8(color.b), Uint8(color.a));
     TTF_DrawRendererText(text, drawRect.x, drawRect.y);
     TTF_DestroyText(text);
 }
