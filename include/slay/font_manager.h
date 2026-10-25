@@ -5,13 +5,9 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include "ui/types.h"
 
 namespace slay {
-
-struct FontId {
-    uint32_t value = 0;
-    explicit operator bool() const { return value != 0; }
-};
 
 class FontManager {
   public:

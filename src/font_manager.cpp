@@ -12,7 +12,6 @@ constexpr float kDefaultSize = 16.0f;
 uint64_t cacheKey(uint32_t family, float size) {
     return (static_cast<uint64_t>(family) << 32) | std::bit_cast<uint32_t>(size);
 }
-
 }
 
 FontManager::FontManager() {
