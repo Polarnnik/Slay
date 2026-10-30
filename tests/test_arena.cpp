@@ -4,7 +4,7 @@
 #include <iostream>
 #include <new>
 
-#include "../src/core/arena.h"
+#include "../include/slay/core/arena.h"
 
 struct Point {
     int x;
@@ -18,7 +18,7 @@ struct alignas(32) AlignedData {
 int main() {
     // Test 1: Basic allocation
     {
-        Arena arena(1024);
+        slay::Arena arena(1024);
 
         int* number = arena.alloc<int>(42);
         assert(number != nullptr);
@@ -33,7 +33,7 @@ int main() {
 
     // Test 2: Alignment
     {
-        Arena arena(1024);
+        slay::Arena arena(1024);
 
         AlignedData* data = arena.alloc<AlignedData>();
         assert(reinterpret_cast<std::uintptr_t>(data) % alignof(AlignedData) == 0);
@@ -46,8 +46,8 @@ int main() {
 
     // Test 3: ArenaArray growth and values
     {
-        Arena arena(4096);
-        ArenaArray<int> arr;
+        slay::Arena arena(4096);
+        slay::ArenaArray<int> arr;
 
         for (int i = 0; i < 10; ++i) {
             arr.push(arena, i * 10);
@@ -65,7 +65,7 @@ int main() {
 
     // Test 4: Arena exhaustion
     {
-        Arena arena(16);
+        slay::Arena arena(16);
 
         bool threw = false;
 
@@ -82,7 +82,7 @@ int main() {
 
     // Test 5: Reset
     {
-        Arena arena(1024);
+        slay::Arena arena(1024);
 
         arena.alloc<int>(42);
         arena.reset();
@@ -97,9 +97,9 @@ int main() {
 
     // Test 6: Independence
     {
-        Arena arena(64);
+        slay::Arena arena(64);
         std::string src = "hello";
-        ArenaStr s = arena.copyStr(src);
+        slay::ArenaStr s = arena.copyStr(src);
 
         src[0] = 'J';
         src.clear();
@@ -112,7 +112,7 @@ int main() {
 
     // Test 7: exhaustion
     {
-        Arena arena(4);
+        slay::Arena arena(4);
         const size_t before = arena.used();
         bool threw = false;
         try {
