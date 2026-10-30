@@ -13,7 +13,7 @@
 namespace slay {
 struct ArenaStr {
     const char* data;
-    uint32_t len;
+    int32_t len;
 };
 
 class Arena {

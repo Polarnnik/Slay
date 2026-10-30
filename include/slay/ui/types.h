@@ -31,9 +31,9 @@ struct Paddings {
 enum class SizeKind : uint8_t { Fit, Grow, Fixed, Percent };
 
 struct Extent {
-    SizeKind kind;
+    SizeKind kind = SizeKind::Fit;
     float value = 0;
-    float min, max = 0;
+    float min = 0, max = 0;
 
     constexpr Extent minPx(float v) const {
         Extent e = *this;
@@ -61,8 +61,9 @@ constexpr Extent fit() {
     return {SizeKind::Fit, 0, 0, 0};
 }
 
+// FontId value 0 - is error/absence of font.
 struct FontId {
-    uint32_t value = 0;
+    uint16_t value = 0;
     explicit operator bool() const { return value != 0; }
 };
 
@@ -72,7 +73,7 @@ enum class Align : uint8_t { Start, Center, End };
 
 struct Border {
     Color color;
-    float width;
+    uint16_t width = 0;
 };
 
 } // namespace slay

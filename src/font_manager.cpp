@@ -41,7 +41,7 @@ FontId FontManager::load(const std::string& filePath) {
         return FontId{};
     }
 
-    FontId id{static_cast<uint32_t>(m_families.size())};
+    FontId id{static_cast<uint16_t>(m_families.size())};
     m_families.push_back({filePath});
     m_cache.emplace(cacheKey(id.value, kDefaultSize), probe);
     return id;

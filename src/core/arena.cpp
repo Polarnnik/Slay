@@ -43,5 +43,5 @@ slay::ArenaStr slay::Arena::copyStr(std::string_view str) {
         throw std::bad_alloc();
 
     std::memcpy(arenaStr, str.data(), str.size());
-    return {static_cast<char*>(arenaStr), static_cast<uint32_t>(str.size())};
+    return {static_cast<char*>(arenaStr), static_cast<int32_t>(str.size())};
 }
