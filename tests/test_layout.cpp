@@ -1,6 +1,7 @@
 #include "slay/core/arena.h"
 #include "slay/ui/div.h"
 #include "slay/ui/text.h"
+#include "slay/ui/ui.h"
 
 #include <clay.h>
 
@@ -59,8 +60,7 @@ int main() {
         assert(boxIs(cmds, 0, 0, 0, 400, 300));
         assert(boxIs(cmds, 1, 10, 10, 380, 50));
         assert(boxIs(cmds, 2, 10, 60, 50, 20));
-        assert(Clay_RenderCommandArray_Get(&cmds, 2)->commandType ==
-               CLAY_RENDER_COMMAND_TYPE_TEXT);
+        assert(Clay_RenderCommandArray_Get(&cmds, 2)->commandType == CLAY_RENDER_COMMAND_TYPE_TEXT);
         std::cout << "Column with padding and text: PASS\n";
     }
 
@@ -117,8 +117,7 @@ int main() {
     {
         slay::Arena arena(4096);
         auto half = slay::DivElement(arena).width(slay::pct(0.5f)).height(slay::px(10)).bg(bg);
-        auto root =
-            slay::DivElement(arena).width(slay::px(400)).height(slay::px(10)).child(&half);
+        auto root = slay::DivElement(arena).width(slay::px(400)).height(slay::px(10)).child(&half);
 
         Clay_RenderCommandArray cmds = layout(root);
         assert(!clayError);
@@ -131,8 +130,7 @@ int main() {
         slay::Arena arena(4096);
         auto child =
             slay::DivElement(arena).width(slay::grow().minPx(100)).height(slay::px(10)).bg(bg);
-        auto root =
-            slay::DivElement(arena).width(slay::px(50)).height(slay::px(10)).child(&child);
+        auto root = slay::DivElement(arena).width(slay::px(50)).height(slay::px(10)).child(&child);
 
         Clay_RenderCommandArray cmds = layout(root);
         assert(!clayError);
@@ -149,6 +147,26 @@ int main() {
         layout(root);
         assert(clayError);
         std::cout << "Percent over 1 is an error: PASS\n";
+    }
+
+    {
+        slay::Ui ui;
+        ui.setDefaultFont(slay::FontId{1});
+        ui.beginFrame();
+        slay::Element* root = ui.div()
+                                  .width(slay::px(200))
+                                  .dir(slay::Direction::Column)
+                                  .bg(bg)
+                                  .child(ui.div().width(slay::grow()).height(slay::px(10)).bg(bg))
+                                  .child(ui.text("hi"));
+
+        Clay_RenderCommandArray cmds = layout(*root);
+        assert(!clayError);
+        assert(cmds.length == 3);
+        assert(boxIs(cmds, 0, 0, 0, 200, 30));
+        assert(boxIs(cmds, 1, 0, 0, 200, 10));
+        assert(boxIs(cmds, 2, 0, 10, 20, 20));
+        std::cout << "Ui temporaries: PASS\n";
     }
 
     std::cout << "All tests passed.\n";

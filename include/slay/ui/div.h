@@ -1,10 +1,11 @@
 #pragma once
-
 #include "slay/core/arena.h"
 #include "slay/ui/element.h"
 #include "slay/ui/style.h"
 #include "slay/ui/types.h"
 
+#include <concepts>
+#include <type_traits>
 #include <utility>
 
 namespace slay {
@@ -53,9 +54,20 @@ class DivElement final : public Element {
         return std::move(*this);
     }
 
+    operator Element*() && { return m_arena->alloc<DivElement>(std::move(*this)); }
+
     DivElement&& child(Element* e) && {
         if (e)
             m_children.push(*m_arena, e);
+        return std::move(*this);
+    }
+
+    template <class E>
+        requires std::derived_from<std::remove_cvref_t<E>, Element> &&
+                 (!std::is_lvalue_reference_v<E>)
+    DivElement&& child(E&& e) && {
+        using T = std::remove_cvref_t<E>;
+        m_children.push(*m_arena, m_arena->alloc<T>(std::move(e)));
         return std::move(*this);
     }
 
