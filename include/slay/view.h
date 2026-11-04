@@ -4,9 +4,9 @@
 
 namespace slay {
 
-    class View {
-        public:
-            virtual ~View() = default;
-            virtual Element* render(Ui& ui) = 0;
-    };
-}
+class View {
+  public:
+    virtual ~View() = default;
+    virtual Element* render(Ui& ui) = 0;
+};
+} // namespace slay

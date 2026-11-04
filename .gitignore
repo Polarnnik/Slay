@@ -1,4 +1,5 @@
 build/
+build-rel/
 packagecache/
 SDL3_ttf-3.2.2/
 *.o
