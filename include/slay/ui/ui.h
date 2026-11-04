@@ -8,7 +8,7 @@ namespace slay {
 
 class Ui {
   public:
-    explicit Ui(size_t arenaBytes = 1 << 20) : m_arena(arenaBytes) {}
+    explicit Ui(size_t arenaBytes = 4 << 20) : m_arena(arenaBytes) {}
     void beginFrame() { m_arena.reset(); }
     void setDefaultFont(FontId f) { m_defaultFont = f; }
 

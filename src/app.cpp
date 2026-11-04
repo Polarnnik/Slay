@@ -41,10 +41,9 @@ slay::FontId slay::App::loadFont(const std::string& filepath) {
     return m_fontManager.load(fullPath);
 }
 
-void slay::App::run() {
+void slay::App::run(View& view) {
     Uint64 lastTime = SDL_GetTicksNS();
 
-    onStart();
     while (!m_platform.shouldQuit()) {
         Uint64 currentTime = SDL_GetTicksNS();
         float deltaTime = static_cast<float>(currentTime - lastTime) / 1'000'000'000.0f;
@@ -57,15 +56,20 @@ void slay::App::run() {
             m_layout.setWindowSize(size.width, size.height);
         }
 
+        m_ui.beginFrame();
         m_layout.begin();
-        onRender();
+        try {
+            if (Element* tree = view.render(m_ui))
+                tree->emit();
+        } catch (const std::bad_alloc&) {
+            SDL_Log("Frame arena exhausted, skipping frame");
+        }
         RenderCommandArray command = m_layout.end(deltaTime);
 
         m_renderer->beginFrame();
         m_renderer->render(command);
         m_renderer->endFrame();
     }
-    onShutDown();
     shutdown();
 }
 

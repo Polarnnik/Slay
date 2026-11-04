@@ -3,6 +3,9 @@
 #include "slay/layout_engine.h"
 #include "slay/platform.h"
 #include "slay/renderer/i_renderer.h"
+#include "slay/ui/types.h"
+#include "slay/ui/ui.h"
+#include "slay/view.h"
 
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
@@ -24,19 +27,17 @@ class App {
     explicit App(const AppConfig& config);
     ~App();
 
-    void run();
+    void run(View& view);
     bool init();
     void shutdown();
 
-  protected:
-    virtual void onStart() {};
-    virtual void onRender() {};
-    virtual void onShutDown() {};
     FontId loadFont(const std::string& filepath);
+    void setDefaultFont(FontId f) { m_ui.setDefaultFont(f); }
 
   private:
     AppConfig m_config;
 
+    Ui m_ui;
     std::unique_ptr<IRenderer> m_renderer;
     FontManager m_fontManager;
     LayoutEngine m_layout;
