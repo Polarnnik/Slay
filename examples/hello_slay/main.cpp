@@ -7,7 +7,7 @@
 class MainView : public slay::View {
   public:
     slay::Element* render(slay::Ui& ui) override {
-        return ui.div().bg(slay::Color::rgba(0x00A000ff)).child(ui.text("WORKS RHAAAAAA!!!"));
+        return ui.div().height(slay::grow()).width(slay::grow()).bg(slay::Color::rgba(0xD64027ff)).child(ui.text("WORKS RHAAAAAA!!!"));
     }
 };
 

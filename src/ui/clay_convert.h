@@ -5,12 +5,7 @@
 #include <clay.h>
 
 inline Clay_Color toClay(slay::Color c) {
-    return {
-        c.r / 255.0f,
-        c.g / 255.0f,
-        c.b / 255.0f,
-        c.a / 255.0f,
-    };
+    return {float(c.r), float(c.g), float(c.b), float(c.a)};
 }
 
 inline Clay_CornerRadius toClay(slay::CornerRadius c) {
